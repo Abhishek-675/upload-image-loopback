@@ -2,10 +2,23 @@ import {
   ApplicationConfig,
   UploadImageLoopbackBackendApplication,
 } from './application';
+require('dotenv').config();
+const cors = require('cors');
+
+const fs = require('fs');
 
 export * from './application';
 
-export async function main(options: ApplicationConfig = {}) {
+export async function main(
+  options: ApplicationConfig = {
+    rest: {
+      cors: {
+        // origin: false,
+        // origin: '*',
+      },
+    },
+  },
+) {
   const app = new UploadImageLoopbackBackendApplication(options);
   await app.boot();
   await app.start();
@@ -21,7 +34,7 @@ if (require.main === module) {
   // Run the application
   const config = {
     rest: {
-      port: +(process.env.PORT ?? 3000),
+      port: +(process.env.PORT || 3000),
       host: process.env.HOST,
       // The `gracePeriodForClose` provides a graceful close for http/https
       // servers with keep-alive clients. The default value is `Infinity`
@@ -33,6 +46,13 @@ if (require.main === module) {
         // useful when used with OpenAPI-to-GraphQL to locate your application
         setServersFromRequest: true,
       },
+      // protocol: 'https',
+      // key: fs.readFileSync('./key.pem'),
+      // cert: fs.readFileSync('./cert.pem'),
+      // cors: {
+      //   origin: false,
+      //   // origin: '*',
+      // },
     },
   };
   main(config).catch(err => {

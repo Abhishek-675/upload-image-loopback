@@ -67,3 +67,8 @@ export class UploadImageLoopbackBackendApplication extends BootMixin(
     this.configure(FILE_UPLOAD_SERVICE).to(multerOptions);
   }
 }
+// const app = new RestApplication({
+//   rest: {
+//     port: 3001,
+//   },
+// });

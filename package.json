@@ -33,6 +33,7 @@
     "openapi-spec": "node ./dist/openapi-spec",
     "prestart": "npm run rebuild",
     "start": "node -r source-map-support/register .",
+    "start-n": "nodemon -r source-map-support/register .",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
     "rebuild": "npm run clean && npm run build"
   },
@@ -55,6 +56,9 @@
     "@loopback/rest": "^12.0.7",
     "@loopback/rest-explorer": "^5.0.7",
     "@loopback/service-proxy": "^5.0.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "nodemon": "^2.0.20",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
