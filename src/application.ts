@@ -58,7 +58,7 @@ export class UploadImageLoopbackBackendApplication extends BootMixin(
         destination,
         // Use the original file name as is
         filename: (req, file, cb) => {
-          cb(null, file.originalname);
+          cb(null, Date.now() + '-' + file.originalname);
           // cb(null, file.originalname);
         },
       }),
