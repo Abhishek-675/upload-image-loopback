@@ -8,6 +8,7 @@ import {
   Response,
   RestBindings,
 } from '@loopback/rest';
+import multer from 'multer';
 import {FILE_UPLOAD_SERVICE} from '../keys';
 import {FileUploadHandler} from '../types';
 
@@ -44,13 +45,19 @@ export class FileUploadController {
   ): Promise<object> {
     return new Promise<object>((resolve, reject) => {
       this.handler(request, response, (err: unknown) => {
-        if (err) reject(err);
+        if (err instanceof multer.MulterError) {
+          console.log(err.message);
+          reject(new InvalidFileFormat('Please upload a image less than 1Mb'));
+        }
+        // if (err) reject(err);
+        else if (err) reject(err);
         else {
           resolve(FileUploadController.getFilesAndFields(request));
         }
       });
     });
   }
+
   /**
    * Get files and fields for the request
    * @param request - Http request
@@ -73,5 +80,14 @@ export class FileUploadController {
       }
     }
     return {files, fields: request.body};
+  }
+}
+
+class InvalidFileFormat extends Error {
+  statusCode: number;
+
+  constructor(message: string) {
+    super(message);
+    this.statusCode = 401;
   }
 }

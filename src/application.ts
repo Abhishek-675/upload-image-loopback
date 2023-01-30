@@ -62,9 +62,32 @@ export class UploadImageLoopbackBackendApplication extends BootMixin(
           // cb(null, file.originalname);
         },
       }),
+      limits: {
+        fileSize: 1048576,
+      },
+      fileFilter(req, file, cb) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+          return cb(new InvalidFileFormat('Please upload a valid file'));
+          // return cb(new Error('Please upload a valid file'));
+        }
+        cb(null, true);
+      },
     };
     // Configure the file upload service with multer options
     this.configure(FILE_UPLOAD_SERVICE).to(multerOptions);
+    //error debug
+    // this.bind(RestBindings.ERROR_WRITER_OPTIONS).to({
+    //   debug: true,
+    // });
+  }
+}
+
+class InvalidFileFormat extends Error {
+  statusCode: number;
+
+  constructor(message: string) {
+    super(message);
+    this.statusCode = 401;
   }
 }
 // const app = new RestApplication({
